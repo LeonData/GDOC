@@ -1,0 +1,6 @@
+<h1>Latest Posts</h1>
+{{range .}}
+ <div><a href="/posts/{{.ID}}">{{.Title}}</a></div>
+ <div>{{.TruncateText}}</div>
+ <div>{{.Date}}</div>
+{{end}}
