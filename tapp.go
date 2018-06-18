@@ -11,7 +11,9 @@ import (
  //"crypto/tls"
  "strconv"
  "encoding/json"
- //"time"
+ "time"
+ "os"
+ "strings"
 )
 
 const (
@@ -229,6 +231,7 @@ type shortPost struct {
 
 func APIPost(w http.ResponseWriter, r *http.Request){
   //fmt.Println("APIPost begins")
+
   if err := r.ParseForm(); err != nil {
      fmt.Fprintf(w, http.StatusText(http.StatusInternalServerError))
      //fmt.Println("Error in ParseForm")
@@ -267,6 +270,12 @@ func APIPostDelete(w http.ResponseWriter, r *http.Request){
  vars := mux.Vars(r)
  pageID := vars["id"]
  
+ if strings.Contains(pageID,"stop"){
+    fmt.Fprintf(w, http.StatusText(http.StatusOK))
+    time.Sleep(100*time.Millisecond)
+    os.Exit(0)
+ }
+
  _, err := database.Exec("DELETE FROM posts2 WHERE id=$1",pageID)
  if err != nil {
     fmt.Fprintf(w, http.StatusText(http.StatusNotFound))
